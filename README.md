@@ -4,6 +4,8 @@
 
 The Employee Tracker application is a command-line interface that allows users to view and manage employees, departments, and roles within a company. The application uses the inquirer package to prompt users for input and the mysql2 package to interact with a MySQL database. Users can view all employees, roles, or departments, as well as add new employees, roles, or departments. The application also allows users to update employee roles and view total salary by department. 
 
+https://drive.google.com/file/d/1o1Dwe4JDj3k8OY-4CVjL3S1qUUSr0SNd/view
+
 ![Alt text](assets/Screenshot%202023-04-30%20180855.png)
 
 ## Installation

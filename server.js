@@ -129,6 +129,30 @@ class DatabaseManager {
     })
   }
 
+  updateEmployeeRole() {
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "employeeId",
+        message: "Enter the ID of the employee whose role you want to update"
+      },
+      {
+        type: "input",
+        name: "roleId",
+        message: "Enter the ID of the new role"
+      }
+    ]).then((answer) => {
+      const query = 'UPDATE employee SET role_id = ? WHERE id = ?';
+      const values = [answer.roleId, answer.employeeId];
+      this.connection.query(query, values, (err, res) => {
+        if (err) throw err;
+        console.log(`Updated employee ${answer.employeeId} to new role ${answer.roleId}`);
+        this.init();
+      });
+    });
+  }
+  
+
   init() {
     inquirer.prompt([
       {
