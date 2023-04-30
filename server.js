@@ -1,7 +1,9 @@
+// Import necessary dependencies
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
 const cTable = require("console.table");
 
+// Create a class to manage the database connection and queries
 class DatabaseManager {
   constructor() {
     this.connection = mysql.createConnection({
@@ -13,6 +15,7 @@ class DatabaseManager {
     });
   }
 
+ // Function to list all departments
   listDepartments() {
     const query = 'SELECT * FROM department';
     this.connection.query(query, (err, res) => {
@@ -22,8 +25,10 @@ class DatabaseManager {
     })
   }
 
+    // Function to list all roles
   listRoles() {
     const query = 'SELECT * FROM role';
+    // Execute the query and log the results to the console as a table
     this.connection.query(query, (err, res) => {
       if (err) throw err;
       console.table(res);
@@ -31,14 +36,18 @@ class DatabaseManager {
     })
   }
 
+ // Function to list all employees
   listEmployees() {
     const query = 'SELECT * FROM employee';
+    // Execute the query and log the results to the console as a table
     this.connection.query(query, (err, res) => {
       if (err) throw err;
       console.table(res);
       this.init();
     })
   }
+
+  // Function to add a new department to the database
 
   addDepartment() {
     inquirer.prompt({
@@ -55,6 +64,8 @@ class DatabaseManager {
     })
   }
 
+  
+  // Function to add a new employee to the database
   addEmployee() {
     inquirer.prompt({
       type: "input",
@@ -73,6 +84,7 @@ class DatabaseManager {
           message: "What is the ID of the employee's manager?"
         }
       ]).then((answer) => {
+        // Split the name into first and last name
         const [firstName, lastName] = nameAnswer.name.split(" ");
         const query = 'INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)';
         this.connection.query(query, [firstName, lastName, answer.role_id, answer.manager_id], (err, res) => {
@@ -84,6 +96,7 @@ class DatabaseManager {
     })
   }
   
+  // Function to add a roll to the database
 
   addRole() {
     inquirer.prompt([
@@ -129,6 +142,8 @@ class DatabaseManager {
           "Exit"
         ]
       }
+       // Use a switch statement to determine what action the user has selected
+      //  Call the appropriate function
     ]).then((answer) => {
       switch (answer.action) {
         case "View all departments":
@@ -159,6 +174,7 @@ class DatabaseManager {
     });
   }
 }
-
+// Create an instance of the "DatabaseManager" class
+//  call its "init" to start the application
 const dbManager = new DatabaseManager();
 dbManager.init();
