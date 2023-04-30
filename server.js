@@ -1,7 +1,7 @@
 // Import necessary dependencies
 const inquirer = require("inquirer");
 const mysql = require ("mysql");
-const cTable = require("console.table");
+const consoleTable = require("console.table");
 
 // Create a class to manage the database connection and queries
 class DatabaseManager {
@@ -66,34 +66,39 @@ class DatabaseManager {
 
   
   // Function to add a new employee to the database
+
   addEmployee() {
-    inquirer.prompt({
-      type: "input",
-      name: "name",
-      message: "Name of employee being added"
-    }).then((nameAnswer) => {
-      inquirer.prompt([
-        {
-          type: "input",
-          name: "role_id",
-          message: "What is the ID of the employee's role?"
-        },
-        {
-          type: "input",
-          name: "manager_id",
-          message: "What is the ID of the employee's manager?"
-        }
-      ]).then((answer) => {
-        // Split the name into first and last name
-        const [firstName, lastName] = nameAnswer.name.split(" ");
-        const query = 'INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)';
-        this.connection.query(query, [firstName, lastName, answer.role_id, answer.manager_id], (err, res) => {
-          if (err) throw err;
-          this.addEmployee();
-          this.init();
-        })
-      })
-    })
+    inquirer.prompt([
+      {
+        type: "input",
+        name: "first_name",
+        message: "Enter the employee's first name"
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "Enter the employee's last name"
+      },
+      {
+        type: "input",
+        name: "role_id",
+        message: "Enter the employee's role id"
+      },
+      {
+        type: "input",
+        name: "manager_id",
+        message: "Enter the employee's manager id"
+      }
+    ]).then((answer) => {
+
+      const query = 'INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)';
+      const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id];
+      this.connection.query(query, values, (err, res) => {
+        if (err) throw err;
+        this.addEmployee();
+        this.init();
+      });
+    });
   }
   
   // Function to add a roll to the database
