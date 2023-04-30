@@ -58,12 +58,11 @@ class DatabaseManager {
       const query = 'INSERT INTO department(name) VALUE (?)';
       this.connection.query(query, answer.department, (err, res) => {
         if (err) throw err;
-        this.listDepartments();
+        this.addDepartment();
         this.init();
       });
     })
   }
-
   
   // Function to add a new employee to the database
 
@@ -90,7 +89,6 @@ class DatabaseManager {
         message: "Enter the employee's manager id"
       }
     ]).then((answer) => {
-
       const query = 'INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)';
       const values = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id];
       this.connection.query(query, values, (err, res) => {
@@ -100,7 +98,7 @@ class DatabaseManager {
       });
     });
   }
-  
+    
   // Function to add a roll to the database
 
   addRole() {
@@ -122,9 +120,10 @@ class DatabaseManager {
       }
     ]).then((answer) => {
       const query = 'INSERT INTO role(title, salary, department_id) VALUE (?, ?, ?)';
-      this.connection.query(query, [answer.title, answer.salary, answer.departmentId], (err, res) => {
+      const values = [answer.title, answer.salary, answer.departmentId]
+      this.connection.query(query, values, (err, res) => {
         if (err) throw err;
-        this.listRoles();
+        this.addRole();
         this.init();
       })
     })
